@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dopamine Detox Garden - どーぱみん・ガーデン</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-emoji">🌸</span>
+        <h1 class="logo-title">Dopamine Detox Garden</h1>
+      </div>
+      <p class="subtitle">スマホを置いて、自分自身と心の庭を育てる時間</p>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <!-- Left side: Garden / Stats View -->
+      <section class="garden-section card">
+        <div class="card-header">
+          <h2>🌱 マイガーデン</h2>
+          <span id="garden-stats" class="badge">咲かせた花: 0輪</span>
+        </div>
+        <div class="garden-grid" id="gardenGrid">
+          <!-- Dynamically generated garden slots -->
+        </div>
+        <div class="garden-empty-msg" id="gardenEmptyMsg">
+          まだお花がありません。タイマーを完了して、花を咲かせましょう！
+        </div>
+      </section>
+
+      <!-- Center: Timer & Plant Growth Area -->
+      <section class="timer-section card highlight-card">
+        <div class="plant-display">
+          <div class="plant-pot">
+            <!-- Soil -->
+            <div class="soil"></div>
+            <!-- Dynamic Plant Elements -->
+            <div class="plant-wrapper" id="plantWrapper">
+              <!-- Seed / Sprout / Leaf / Flower will be rendered here dynamically -->
+              <div class="seed" id="plantSeed"></div>
+              <div class="stem" id="plantStem"></div>
+              <div class="leaves" id="plantLeaves"></div>
+              <div class="flower-bud" id="plantFlower">🌸</div>
+            </div>
+          </div>
+          <div class="status-msg" id="statusMessage">種がまかれました。静かに見守りましょう。</div>
+        </div>
+
+        <div class="timer-controls">
+          <div class="time-picker" id="timePickerContainer">
+            <label for="durationSelect">デトックス時間を選択:</label>
+            <select id="durationSelect" class="custom-select">
+              <option value="10">10秒 (動作確認用)</option>
+              <option value="300">5分 (クイックリフレッシュ)</option>
+              <option value="900">15分 (プチデジタルデトックス)</option>
+              <option value="1500" selected>25分 (ポモドーロ・フォーカス)</option>
+              <option value="3000">50分 (しっかり集中)</option>
+            </select>
+          </div>
+
+          <div class="timer-display-wrapper">
+            <span class="timer-display" id="timerDisplay">25:00</span>
+          </div>
+
+          <div class="button-group">
+            <button id="startBtn" class="btn btn-primary">庭造りを始める 🌱</button>
+            <button id="cancelBtn" class="btn btn-danger hidden">あきらめる 😢</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right side: History / Log View -->
+      <section class="history-section card">
+        <h2>📝 今を大切にした記録</h2>
+        <div class="history-list" id="historyList">
+          <!-- Dynamically generated journal list -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Journal Input Modal -->
+  <div class="modal-overlay hidden" id="journalModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🎉 デトックス達成！花が咲きました！</h2>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">スマホを置いている間、今この瞬間をどのように大切に過ごせましたか？今日の小さな「できたこと」を記録しましょう。</p>
+        
+        <form id="journalForm">
+          <div class="form-group">
+            <label for="activityInput">取り組んだこと・できたこと:</label>
+            <input type="text" id="activityInput" required placeholder="例: 読書をした、課題を進めた、散歩して空を見上げた">
+          </div>
+          
+          <div class="form-group">
+            <label>今を大切にできた度:</label>
+            <div class="star-rating">
+              <input type="radio" id="star5" name="rating" value="5" checked><label for="star5" title="最高！">★</label>
+              <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="とても良い">★</label>
+              <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="普通">★</label>
+              <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="少しだけ">★</label>
+              <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="あまりできなかった">★</label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="reflectionInput">一言日記（自分を褒める言葉）:</label>
+            <textarea id="reflectionInput" rows="3" placeholder="例: スマホを見ずに本に集中できてスッキリした！この調子で頑張ろう。"></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">記録をガーデンに飾る 🌸</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>

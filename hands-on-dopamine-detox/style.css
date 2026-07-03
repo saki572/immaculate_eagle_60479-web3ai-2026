@@ -1,0 +1,637 @@
+/* Core Design Tokens & Variables */
+:root {
+  --font-main: 'Noto Sans JP', sans-serif;
+  --font-alt: 'Outfit', sans-serif;
+
+  /* Color Palette (Soft, Nature-inspired, premium glassmorphism base) */
+  --bg-app: linear-gradient(135deg, #eef5f3 0%, #e6eef8 100%);
+  --text-main: #2b3a42;
+  --text-muted: #62757f;
+  
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(255, 255, 255, 0.4);
+  --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+  
+  --primary: #52b788;
+  --primary-hover: #40916c;
+  --primary-light: #d8f3dc;
+  
+  --danger: #ff6b6b;
+  --danger-hover: #fa5252;
+  
+  --accent: #ffb703;
+  --accent-light: #fefae0;
+
+  --transition-speed: 0.3s;
+}
+
+/* Dark Mode override if desired (can be toggled or auto) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-app: linear-gradient(135deg, #1b262c 0%, #0f4c81 100%);
+    --text-main: #f0f4f8;
+    --text-muted: #9bb1c1;
+    --card-bg: rgba(25, 34, 49, 0.65);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    
+    --primary: #40916c;
+    --primary-hover: #52b788;
+    --primary-light: rgba(82, 183, 136, 0.15);
+    
+    --danger: #fa5252;
+    --danger-hover: #ff6b6b;
+  }
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-app);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+/* Layout Wrapper */
+.app-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header styling */
+.app-header {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.logo-emoji {
+  font-size: 2.2rem;
+  animation: float 4s ease-in-out infinite;
+}
+
+.logo-title {
+  font-family: var(--font-alt);
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, var(--primary), #3a86c8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* Main Grid Layout */
+.app-main {
+  display: grid;
+  grid-template-columns: 1.2fr 1.6fr 1.2fr;
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .app-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card glassmorphism style */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.08);
+}
+
+.highlight-card {
+  border: 2px solid rgba(82, 183, 136, 0.3);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Timer and Interactive Pot Area */
+.plant-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  position: relative;
+}
+
+.plant-pot {
+  width: 160px;
+  height: 60px;
+  background: linear-gradient(135deg, #a06a50 0%, #7d4f39 100%);
+  border-radius: 0 0 20px 20px;
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  margin-top: 120px;
+}
+
+.plant-pot::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 180px;
+  height: 12px;
+  background: #b07559;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.soil {
+  position: absolute;
+  top: -6px;
+  left: 2px;
+  width: 156px;
+  height: 8px;
+  background: #5c3d2e;
+  border-radius: 4px;
+}
+
+/* Plant Wrapper & Dynamic Stages */
+.plant-wrapper {
+  position: absolute;
+  bottom: 50px; /* Anchored to pot soil level */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Seed stage */
+.seed {
+  width: 14px;
+  height: 10px;
+  background: #d4a373;
+  border-radius: 50%;
+  bottom: -40px;
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+/* Stem stage */
+.stem {
+  width: 6px;
+  height: 0px;
+  background: var(--primary);
+  border-radius: 3px;
+  transition: height 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Leaves stage */
+.leaves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.leaves::before, .leaves::after {
+  content: '🍃';
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: scale(0);
+}
+
+.leaves::before {
+  left: -20px;
+  bottom: 20px;
+  transform: rotate(-30deg) scale(0);
+}
+
+.leaves::after {
+  right: -20px;
+  bottom: 35px;
+  transform: rotate(30deg) scale(0);
+}
+
+/* Flower stage */
+.flower-bud {
+  position: absolute;
+  bottom: 0;
+  font-size: 2.2rem;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: default;
+}
+
+/* Active animation classes applied by js */
+.stage-seed .seed {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.stage-sprout .seed {
+  transform: scale(0);
+  opacity: 0;
+}
+.stage-sprout .stem {
+  height: 40px;
+}
+
+.stage-growing .stem {
+  height: 80px;
+}
+.stage-growing .leaves::before {
+  opacity: 1;
+  transform: rotate(-30deg) scale(1);
+}
+.stage-growing .leaves::after {
+  opacity: 1;
+  transform: rotate(30deg) scale(1);
+}
+
+.stage-bloomed .stem {
+  height: 100px;
+}
+.stage-bloomed .leaves::before {
+  opacity: 1;
+  transform: rotate(-30deg) scale(1);
+}
+.stage-bloomed .leaves::after {
+  opacity: 1;
+  transform: rotate(30deg) scale(1);
+}
+.stage-bloomed .flower-bud {
+  opacity: 1;
+  transform: scale(1);
+  bottom: 90px;
+  animation: pulse-flower 2s infinite alternate;
+}
+
+.stage-withered .stem {
+  height: 50px;
+  background: #8b7d77;
+  transform: rotate(20deg);
+}
+.stage-withered .seed {
+  opacity: 0;
+}
+.stage-withered .leaves::before,
+.stage-withered .leaves::after {
+  content: '🍂';
+  opacity: 0.6;
+  transform: translateY(20px) rotate(45deg);
+}
+
+/* Text status message below plant */
+.status-msg {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+/* Timer picker and controls */
+.timer-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.time-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.time-picker label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.custom-select {
+  width: 100%;
+  max-width: 220px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-main);
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font-main);
+  transition: border var(--transition-speed);
+}
+
+.custom-select:focus {
+  border-color: var(--primary);
+}
+
+.timer-display-wrapper {
+  text-align: center;
+}
+
+.timer-display {
+  font-family: var(--font-alt);
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -1px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  font-family: var(--font-main);
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 6px 20px rgba(82, 183, 136, 0.3);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+.btn-danger:hover {
+  background: var(--danger-hover);
+  box-shadow: 0 6px 20px rgba(250, 82, 82, 0.3);
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Garden Grid (Left side) */
+.garden-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.garden-slot {
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px dashed rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.garden-slot:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.garden-empty-msg {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 40px 20px;
+  border: 1px dashed var(--card-border);
+  border-radius: 12px;
+}
+
+/* History / Log view (Right side) */
+.history-list {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 14px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+}
+
+.history-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.history-item-emoji {
+  font-size: 1.2rem;
+}
+
+.history-item-activity {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.history-item-reflection {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-left: 2px solid var(--primary-light);
+  padding-left: 8px;
+}
+
+.history-item-stars {
+  color: var(--accent);
+  letter-spacing: -2px;
+}
+
+/* Modal Overlay & Card Popup */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 500px;
+  padding: 30px;
+  animation: slide-up var(--transition-speed) ease;
+}
+
+.modal-intro {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.form-group input, .form-group textarea {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-main);
+  outline: none;
+  font-size: 0.95rem;
+  transition: border var(--transition-speed);
+}
+
+.form-group input:focus, .form-group textarea:focus {
+  border-color: var(--primary);
+}
+
+/* Star rating custom UI */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 1.6rem;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: var(--accent);
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes pulse-flower {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

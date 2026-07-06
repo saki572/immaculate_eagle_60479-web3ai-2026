@@ -101,7 +101,23 @@
         <form id="journalForm">
           <div class="form-group">
             <label for="activityInput">取り組んだこと・できたこと:</label>
-            <input type="text" id="activityInput" required placeholder="例: 読書をした、課題を進めた、散歩して空を見上げた">
+            <input type="text" id="activityInput" required placeholder="例: 本を3章読んだ、レポートの下書きを書いた">
+          </div>
+          
+          <div class="form-group">
+            <label>今日のデトックスのしやすさは？（設問ガイド）</label>
+            <select id="reflectionGuideSelect" class="custom-select" style="max-width: 100%; margin-bottom: 8px;">
+              <option value="">-- 日記のヒントを選ぶ（選択すると下にテンプレートが入ります） --</option>
+              <option value="スマホを置いている間、何に一番集中できましたか？それはどんな気分でしたか？">Q1. 何に一番集中できた？（気分の変化）</option>
+              <option value="スマホが気になった瞬間はありましたか？それをどうやって乗り越えましたか？">Q2. スマホの誘惑をどう乗り越えた？</option>
+              <option value="スマホを使わなかったことで、自分や周りのためにどんな良い影響がありましたか？">Q3. 周りや自分への良い影響は？</option>
+              <option value="次にスマホを置くときは、何をしたいですか？">Q4. 次にやってみたいこと</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="reflectionInput">一言日記（上の問いへの答えや、自分を褒める言葉）:</label>
+            <textarea id="reflectionInput" rows="3" placeholder="例: スマホを置くことで読書に没頭できてリフレッシュできた！自分偉い。"></textarea>
           </div>
           
           <div class="form-group">
@@ -113,11 +129,6 @@
               <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="少しだけ">★</label>
               <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="あまりできなかった">★</label>
             </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="reflectionInput">一言日記（自分を褒める言葉）:</label>
-            <textarea id="reflectionInput" rows="3" placeholder="例: スマホを見ずに本に集中できてスッキリした！この調子で頑張ろう。"></textarea>
           </div>
           
           <button type="submit" class="btn btn-primary btn-block">記録をガーデンに飾る 🌸</button>

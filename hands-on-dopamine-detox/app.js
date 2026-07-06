@@ -116,6 +116,16 @@ function setupEventListeners() {
     updateTimerDisplay();
   });
 
+  const guideSelect = document.getElementById('reflectionGuideSelect');
+  if (guideSelect) {
+    guideSelect.addEventListener('change', (e) => {
+      if (e.target.value) {
+        reflectionInput.value = `【${e.target.options[e.target.selectedIndex].text}】\n${e.target.value}\n=> `;
+        reflectionInput.focus();
+      }
+    });
+  }
+
   startBtn.addEventListener('click', () => {
     playSound('click');
     startTimer();
@@ -136,6 +146,13 @@ function setupEventListeners() {
 
 // Timer Logic
 function startTimer() {
+  // Sync duration select option immediately when starting
+  if (durationSelect) {
+    totalDuration = parseInt(durationSelect.value) || 1500;
+    timeRemaining = totalDuration;
+    updateTimerDisplay();
+  }
+
   isTimerRunning = true;
   timePickerContainer.classList.add('hidden');
   startBtn.classList.add('hidden');

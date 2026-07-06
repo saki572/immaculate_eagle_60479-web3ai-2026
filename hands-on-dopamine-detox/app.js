@@ -9,44 +9,56 @@ let timeRemaining = 1500;
 let isTimerRunning = false;
 let currentStage = 'seed'; // seed, sprout, growing, bloomed, withered
 
-// Audio cues (synthesized using Web Audio API so no file assets needed)
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function playSound(type) {
+// Audio cues (synthesized using Web Audio API)
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
   if (audioCtx.state === 'suspended') {
     audioCtx.resume();
   }
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
+}
 
-  if (type === 'success') {
-    // Joyful arpeggio
-    const now = audioCtx.currentTime;
-    osc.frequency.setValueAtTime(523.25, now); // C5
-    osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
-    osc.frequency.setValueAtTime(783.99, now + 0.3); // G5
-    osc.frequency.setValueAtTime(1046.50, now + 0.45); // C6
-    gain.gain.setValueAtTime(0.15, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
-    osc.start(now);
-    osc.stop(now + 0.8);
-  } else if (type === 'fail') {
-    // Disappointing down-sweep
-    const now = audioCtx.currentTime;
-    osc.frequency.setValueAtTime(220, now); // A3
-    osc.frequency.exponentialRampToValueAtTime(110, now + 0.5); // A2
-    gain.gain.setValueAtTime(0.2, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-    osc.start(now);
-    osc.stop(now + 0.5);
-  } else if (type === 'click') {
-    const now = audioCtx.currentTime;
-    osc.frequency.setValueAtTime(440, now);
-    gain.gain.setValueAtTime(0.05, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-    osc.start(now);
-    osc.stop(now + 0.05);
+function playSound(type) {
+  try {
+    initAudio();
+    if (!audioCtx) return;
+    
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === 'success') {
+      const now = audioCtx.currentTime;
+      osc.frequency.setValueAtTime(523.25, now); // C5
+      osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
+      osc.frequency.setValueAtTime(783.99, now + 0.3); // G5
+      osc.frequency.setValueAtTime(1046.50, now + 0.45); // C6
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
+      osc.start(now);
+      osc.stop(now + 0.8);
+    } else if (type === 'fail') {
+      const now = audioCtx.currentTime;
+      osc.frequency.setValueAtTime(220, now); // A3
+      osc.frequency.exponentialRampToValueAtTime(110, now + 0.5); // A2
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+      osc.start(now);
+      osc.stop(now + 0.5);
+    } else if (type === 'click') {
+      const now = audioCtx.currentTime;
+      osc.frequency.setValueAtTime(440, now);
+      gain.gain.setValueAtTime(0.05, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+      osc.start(now);
+      osc.stop(now + 0.05);
+    }
+  } catch (e) {
+    console.warn("Audio playback not supported or blocked by browser settings:", e);
   }
 }
 

@@ -77,6 +77,11 @@ const historyList = document.getElementById('historyList');
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize duration from the HTML selected option
+  totalDuration = parseInt(durationSelect.value) || 1500;
+  timeRemaining = totalDuration;
+  updateTimerDisplay();
+
   loadData();
   setupEventListeners();
   updatePlantUI('seed');

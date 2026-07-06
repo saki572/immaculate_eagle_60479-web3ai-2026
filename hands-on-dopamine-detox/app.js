@@ -88,16 +88,25 @@ const gardenStatsBadge = document.getElementById('gardenStats');
 const historyList = document.getElementById('historyList');
 
 // Initialize App
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
   // Initialize duration from the HTML selected option
-  totalDuration = parseInt(durationSelect.value) || 1500;
-  timeRemaining = totalDuration;
-  updateTimerDisplay();
+  if (durationSelect) {
+    totalDuration = parseInt(durationSelect.value) || 1500;
+    timeRemaining = totalDuration;
+    updateTimerDisplay();
+  }
 
   loadData();
   setupEventListeners();
   updatePlantUI('seed');
-});
+}
+
+// Safely trigger initialization
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // Setup Listeners
 function setupEventListeners() {
